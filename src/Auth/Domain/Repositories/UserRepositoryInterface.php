@@ -3,6 +3,7 @@
 namespace Src\Auth\Domain\Repositories;
 
 use Src\Auth\Domain\Entities\User;
+use Illuminate\Support\Collection;
 
 interface UserRepositoryInterface
 {
@@ -11,4 +12,5 @@ interface UserRepositoryInterface
     public function findById(int $id): ?User;
     public function save(User $user): User;
     public function exists(string $email): bool;
+    public function getModulesListByUser(int $userId): Collection;
 }

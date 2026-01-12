@@ -44,10 +44,12 @@ final class LoginUseCase
         $token = $eloquentUser->createToken('auth-token')->plainTextToken;
 
 
-
+        $tokenType = 'Bearer';
         return new AuthResponseDTO(
             user: UserResponseDTO::fromEntity($user),
-            token: $token
+            token: $token,
+            tokenType: $tokenType,
+            modules: $this->repository->getModulesListByUser($user->getId())
         );
     }
 }
