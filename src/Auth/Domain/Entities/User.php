@@ -10,8 +10,6 @@ final class User
         private ?int $id = null,
         private ?string $name = null,
         private ?string $email = null,
-        private ?\DateTimeImmutable $createdAt = null,
-        private ?\DateTimeImmutable $updatedAt = null,
         private ?PersonalData $persona = null,
         private ?int $id_personal = null,
         private ?\DateTimeImmutable $email_verified_at = null,
@@ -53,15 +51,7 @@ final class User
         $this->email = $email;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
 
     public function getPersona(): ?PersonalData
     {

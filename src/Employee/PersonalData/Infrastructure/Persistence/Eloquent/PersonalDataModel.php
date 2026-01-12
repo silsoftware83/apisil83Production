@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Persistence\Eloquent\Departamento;
+use Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Persistence\Eloquent\Puesto;
 
 final class PersonalDataModel extends Model
 {
@@ -86,10 +88,10 @@ final class PersonalDataModel extends Model
     /**
      * Departamento al que pertenece el empleado
      */
-    // public function departamento()
-    // {
-    //     return $this->belongsTo(Departamento::class, 'id_departamento');
-    // }
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'id_departamento');
+    }
 
     /**
      * Relación: Empleados que reportan a este jefe
@@ -103,10 +105,10 @@ final class PersonalDataModel extends Model
     {
         return $this->hasOne(User::class, 'id_personal');
     }
-    // public function puesto()
-    // {
-    //     return $this->belongsTo(Puesto::class, 'id_puesto');
-    // }
+    public function puesto()
+    {
+        return $this->belongsTo(Puesto::class, 'id_puesto');
+    }
 
     /**
      * Scope: Solo empleados activos

@@ -6,8 +6,6 @@ use Src\Auth\Domain\Entities\User;
 use Src\Auth\Domain\Repositories\UserRepositoryInterface;
 use App\Models\User as EloquentUser;
 use Src\Employee\PersonalData\Domain\Entities\PersonalData;
-use Src\Employee\PersonalData\Infrastructure\Persistence\Eloquent\PersonalDataModel;
-use Illuminate\Support\Facades\Log;
 
 final class EloquentUserRepository implements UserRepositoryInterface
 {
@@ -23,13 +21,21 @@ final class EloquentUserRepository implements UserRepositoryInterface
     }
     public function findByEmailWithPersona(string $email): ?User
     {
-        $model = EloquentUser::where('email', $email)->with('persona')->first();
+        $model = EloquentUser::where('email', $email)->with([
+            'persona' => function ($q) {
+                $q->select('id', 'name', 'lastName', 'id_departamento', 'id_puesto')
+                    ->with([
+                        'departamento:id,nombre',
+                        'puesto:id,id_departamento,nombre'
+                    ]);
+            }
+        ])->first();
 
         if (!$model) {
             return null;
         }
 
-        return $this->mapToEntityPersona($model);
+        return $this->mapToEntityPersonaLogin($model);
     }
 
     public function findById(int $id): ?User
@@ -68,20 +74,25 @@ final class EloquentUserRepository implements UserRepositoryInterface
             id: $model->id,
             name: $model->name,
             email: $model->email,
-            createdAt: $model->created_at ? new \DateTimeImmutable($model->created_at) : null,
-            updatedAt: $model->updated_at ? new \DateTimeImmutable($model->updated_at) : null,
-
         );
     }
-    private function mapToEntityPersona(EloquentUser $model): User
+
+    private function mapToEntityPersonaLogin(EloquentUser $model): User
     {
         return new User(
             id: $model->id,
             name: $model->name,
             email: $model->email,
-            persona: $model->persona,
-            createdAt: $model->created_at ? new \DateTimeImmutable($model->created_at) : null,
-            updatedAt: $model->updated_at ? new \DateTimeImmutable($model->updated_at) : null,
+            persona: new PersonalData(
+                id: $model->persona->id,
+                idDepartamento: $model->persona->id_departamento,
+                idPuesto: $model->persona->id_puesto,
+                idJefeInmediato: $model->persona->id_jefe_inmediato,
+                name: $model->persona->name,
+                lastName: $model->persona->lastName,
+                departamento: $model->persona->departamento,
+                puesto: $model->persona->puesto,
+            )
         );
     }
 }
