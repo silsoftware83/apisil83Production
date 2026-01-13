@@ -14,7 +14,7 @@ final class ListPersonalDataUseCase
 
     public function execute(ListPersonalDataDTO $dto): array
     {
-        $entities = $this->repository->all();
+        $entities = $this->repository->all($dto->perPage, $dto->active);
 
         return array_map(
             fn($entity) => PersonalDataResponseDTO::fromEntity($entity),

@@ -9,6 +9,6 @@ interface PersonalDataRepositoryInterface
     public function save(PersonalData $entity): PersonalData;
     public function find(int $id): PersonalData;
     public function delete(PersonalData $entity): void;
-    public function all(): array;
+    public function all(int $perPage, int $active): array;
     public function exists(int $id): bool;
 }

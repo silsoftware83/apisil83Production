@@ -9,6 +9,7 @@ final class ListPersonalDataDTO
         public readonly ?int $perPage = 15,
         public readonly ?string $sortBy = 'id',
         public readonly ?string $sortOrder = 'asc',
+        public readonly ?int $active = 1,
         // TODO: Add filter parameters
     ) {}
 }
