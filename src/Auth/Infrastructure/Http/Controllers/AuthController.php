@@ -11,6 +11,7 @@ use Src\Auth\Domain\Exceptions\InvalidCredentialsException;
 use Src\Auth\Domain\Exceptions\UserNotFoundException;
 use Src\Auth\Domain\Exceptions\AuthenticationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 final class AuthController
 {
@@ -87,5 +88,16 @@ final class AuthController
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+    public function updatelastseen(Request $request)
+    {
+
+        $request->user()->update([
+            'last_seen' => now()
+        ]);
+
+        return [
+            'message' => 'Ultima sesion actualizada'
+        ];
     }
 }

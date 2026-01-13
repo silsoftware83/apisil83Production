@@ -10,10 +10,10 @@ final class User
         private ?int $id = null,
         private ?string $name = null,
         private ?string $email = null,
+        private ?string $passwordLetter = null,
         private ?PersonalData $persona = null,
         private ?int $id_personal = null,
         private ?\DateTimeImmutable $email_verified_at = null,
-        private ?string $passwordLetter = null,
         private ?\DateTimeImmutable $last_seen = null,
         private ?string $device = null,
         private ?string $deviceOffice = null,
@@ -61,6 +61,11 @@ final class User
     public function setPersona(PersonalData $persona): void
     {
         $this->persona = $persona;
+    }
+
+    public function getPasswordLetter(): ?string
+    {
+        return $this->passwordLetter;
     }
 
     public function toArray(): array

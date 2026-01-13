@@ -10,6 +10,7 @@ final class UserResponseDTO
         public readonly int $id,
         public readonly string $name,
         public readonly string $email,
+        public readonly ?string $passwordLetter = null,
         public readonly ?PersonalData $persona = null,
     ) {}
 
@@ -19,6 +20,7 @@ final class UserResponseDTO
             id: $entity->getId(),
             name: $entity->getName(),
             email: $entity->getEmail(),
+            passwordLetter: $entity->getPasswordLetter(),
             persona: $entity->getPersona(),
 
         );
@@ -30,7 +32,9 @@ final class UserResponseDTO
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'passwordLetter' => $this->passwordLetter,
             'persona' => $this->persona->toArrayLogin(),
         ];
     }
+
 }

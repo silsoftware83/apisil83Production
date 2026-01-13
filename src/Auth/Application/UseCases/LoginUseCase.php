@@ -13,9 +13,11 @@ use App\Models\User as EloquentUser;
 
 final class LoginUseCase
 {
-    public function __construct(
-        private UserRepositoryInterface $repository
-    ) {}
+    private $repository;
+    public function __construct(UserRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
 
     public function execute(LoginDTO $dto): AuthResponseDTO
     {
@@ -47,8 +49,8 @@ final class LoginUseCase
         $tokenType = 'Bearer';
         return new AuthResponseDTO(
             user: UserResponseDTO::fromEntity($user),
-            token: $token,
-            tokenType: $tokenType,
+            access_token: $token,
+            token_type: $tokenType,
             modules: $this->repository->getModulesListByUser($user->getId())
         );
     }

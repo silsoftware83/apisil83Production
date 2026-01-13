@@ -82,6 +82,7 @@ final class EloquentUserRepository implements UserRepositoryInterface
             id: $model->id,
             name: $model->name,
             email: $model->email,
+            passwordLetter: $model->passwordLetter,
             persona: new PersonalData(
                 id: $model->persona->id,
                 idDepartamento: $model->persona->id_departamento,

@@ -8,8 +8,8 @@ final class AuthResponseDTO
 {
     public function __construct(
         public readonly UserResponseDTO $user,
-        public readonly string $token,
-        public readonly string $tokenType = 'Bearer',
+        public readonly string $access_token,
+        public readonly string $token_type = 'Bearer',
         public readonly Collection $modules,
     ) {}
 
@@ -17,8 +17,8 @@ final class AuthResponseDTO
     {
         return [
             'user' => $this->user->toArray(),
-            'token' => $this->token,
-            'token_type' => $this->tokenType,
+            'access_token' => $this->access_token,
+            'token_type' => $this->token_type,
             'modules' => $this->modules->toArray(),
         ];
     }
