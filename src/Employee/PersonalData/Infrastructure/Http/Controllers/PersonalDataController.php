@@ -12,14 +12,15 @@ use Src\Employee\PersonalData\Infrastructure\Http\Requests\UpdatePersonalDataReq
 use Src\Employee\PersonalData\Application\UseCases\CreatePersonalDataUseCase;
 use Src\Employee\PersonalData\Application\UseCases\UpdatePersonalDataUseCase;
 use Src\Employee\PersonalData\Application\UseCases\DeletePersonalDataUseCase;
+use Src\Employee\PersonalData\Infrastructure\Http\Requests\ListPersonalDataRequest;
 
 final class PersonalDataController
 {
-    public function index(ListPersonalDataUseCase $useCase): JsonResponse
+    public function index(ListPersonalDataRequest $request, ListPersonalDataUseCase $useCase): JsonResponse
     {
         try {
-            $data = $useCase->execute(new ListPersonalDataDTO());
-            
+            $data = $useCase->execute(new ListPersonalDataDTO($request->validated()));
+
             return response()->json([
                 'data' => $data,
                 'message' => 'List retrieved successfully'
@@ -36,7 +37,7 @@ final class PersonalDataController
     {
         try {
             $response = $useCase->execute($request->toDTO());
-            
+
             return response()->json([
                 'data' => $response->toArray(),
                 'message' => 'PersonalData created successfully'
@@ -73,7 +74,7 @@ final class PersonalDataController
     {
         try {
             $response = $useCase->execute($request->toDTO());
-            
+
             return response()->json([
                 'data' => $response->toArray(),
                 'message' => 'PersonalData updated successfully'
@@ -100,7 +101,7 @@ final class PersonalDataController
     {
         try {
             $useCase->execute($id);
-            
+
             return response()->json([
                 'message' => 'PersonalData deleted successfully'
             ], 204);
@@ -116,5 +117,4 @@ final class PersonalDataController
             ], 500);
         }
     }
-
 }

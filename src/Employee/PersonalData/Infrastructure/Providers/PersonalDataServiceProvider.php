@@ -2,6 +2,7 @@
 
 namespace Src\Employee\PersonalData\Infrastructure\Providers;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Src\Employee\PersonalData\Domain\Repositories\PersonalDataRepositoryInterface;
 use Src\Employee\PersonalData\Infrastructure\Persistence\Repositories\EloquentPersonalDataRepository;
@@ -19,8 +20,8 @@ final class PersonalDataServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->loadRoutesFrom(
-            base_path('src/Employee/PersonalData/Infrastructure/Http/Routes/api.php')
-        );
+        Route::prefix('api/')
+            ->middleware('api')
+            ->group(base_path('src/Employee/PersonalData/Infrastructure/Http/Routes/api.php'));
     }
 }

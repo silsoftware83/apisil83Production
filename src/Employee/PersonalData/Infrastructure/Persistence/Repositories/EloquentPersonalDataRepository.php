@@ -17,7 +17,7 @@ final class EloquentPersonalDataRepository implements PersonalDataRepositoryInte
 
         $data = $entity->toArray();
         unset($data['id'], $data['created_at'], $data['updated_at']);
-        
+
         $model->fill($data);
         $model->save();
 
@@ -45,9 +45,10 @@ final class EloquentPersonalDataRepository implements PersonalDataRepositoryInte
         PersonalDataModel::destroy($entity->getId());
     }
 
-    public function all(): array
+    public function all(int $perPage, int $active): array
     {
-        return PersonalDataModel::all()
+        return PersonalDataModel::where('active', $active)
+            ->paginate($perPage)
             ->map(fn($model) => $this->mapToEntity($model))
             ->toArray();
     }
