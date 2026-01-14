@@ -14,7 +14,7 @@ final class ListPersonalDataUseCase
 
     public function execute(ListPersonalDataDTO $dto): array
     {
-        $result = $this->repository->all($dto->perPage, $dto->active);
+        $result = $this->repository->all($dto->perPage, $dto->active, $dto->page);
 
         if (isset($result['data']) && is_array($result['data'])) {
             $result['data'] = array_map(

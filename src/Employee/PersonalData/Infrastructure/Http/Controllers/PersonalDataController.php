@@ -20,8 +20,8 @@ final class PersonalDataController
     public function index(ListPersonalDataRequest $request, ListPersonalDataUseCase $useCase): JsonResponse
     {
         try {
-            $data = $request->validated();
-            $response = $useCase->execute(new ListPersonalDataDTO($data['per_page'], $data['active']));
+            $dto = $request->toDTO();
+            $response = $useCase->execute($dto);
 
             return response()->json($response);
         } catch (\Exception $e) {

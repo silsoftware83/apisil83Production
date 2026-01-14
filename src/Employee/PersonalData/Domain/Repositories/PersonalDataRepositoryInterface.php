@@ -12,6 +12,6 @@ interface PersonalDataRepositoryInterface
     /**
      * @return array{data: PersonalData[], current_page: int, last_page: int, per_page: int, total: int, ...}
      */
-    public function all(int $perPage, int $active): array;
+    public function all(int $perPage, int $active, int $page = 1): array;
     public function exists(int $id): bool;
 }

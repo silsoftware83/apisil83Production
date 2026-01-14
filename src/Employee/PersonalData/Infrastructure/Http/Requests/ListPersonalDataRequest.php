@@ -17,21 +17,24 @@ final class ListPersonalDataRequest extends FormRequest
         return [
             'per_page' => 'required|integer',
             'active' => 'required|integer',
-
+            'page' => 'sometimes|integer|min:1',
         ];
     }
 
     public function messages(): array
     {
         return [
-            // TODO: Add custom error messages
+            'per_page.required' => 'Items per page is required',
+            'active.required' => 'Active status filter is required',
         ];
     }
 
     public function toDTO(): ListPersonalDataDTO
     {
         return new ListPersonalDataDTO(
-            // TODO: Map validated request data to DTO
+            perPage: (int) $this->input('per_page'),
+            active: (int) $this->input('active'),
+            page: (int) $this->input('page', 1)
         );
     }
 }

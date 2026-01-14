@@ -45,10 +45,10 @@ final class EloquentPersonalDataRepository implements PersonalDataRepositoryInte
         PersonalDataModel::destroy($entity->getId());
     }
 
-    public function all(int $perPage, int $active): array
+    public function all(int $perPage, int $active, int $page = 1): array
     {
         $paginator = PersonalDataModel::where('activo', $active)
-            ->paginate($perPage);
+            ->paginate($perPage, ['*'], 'page', $page);
 
         $paginator->getCollection()->transform(fn($model) => $this->mapToEntity($model));
 
