@@ -2,6 +2,7 @@
 
 namespace Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Providers;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Src\Configuration\Company\DepartmentsAndPositions\Domain\Repositories\DepartmentsAndPositionsRepositoryInterface;
 use Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Persistence\Repositories\EloquentDepartmentsAndPositionsRepository;
@@ -19,8 +20,9 @@ final class DepartmentsAndPositionsServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->loadRoutesFrom(
-            base_path('src/Configuration/Company/DepartmentsAndPositions/Infrastructure/Http/Routes/api.php')
-        );
+
+        Route::prefix('api/')
+            ->middleware('api')
+            ->group(base_path('src/Configuration/Company/DepartmentsAndPositions/Infrastructure/Http/Routes/api.php'));
     }
 }

@@ -6,7 +6,7 @@ use Src\Employee\Directory\Domain\Entities\Directory;
 use Src\Employee\Directory\Domain\Repositories\DirectoryRepositoryInterface;
 use Src\Employee\Directory\Domain\Exceptions\DirectoryNotFoundException;
 use Src\Employee\Directory\Infrastructure\Persistence\Eloquent\DirectoryModel;
-use Src\Employee\PersonalData\Infrastructure\Persistence\Eloquent\PersonalDataModel;
+use Src\Employee\PersonalData\PersonalInformation\Infrastructure\Persistence\Eloquent\PersonalDataModel;
 
 final class EloquentDirectoryRepository implements DirectoryRepositoryInterface
 {
@@ -18,7 +18,7 @@ final class EloquentDirectoryRepository implements DirectoryRepositoryInterface
 
         $data = $entity->toArray();
         unset($data['id'], $data['created_at'], $data['updated_at']);
-        
+
         $model->fill($data);
         $model->save();
 
@@ -51,7 +51,6 @@ final class EloquentDirectoryRepository implements DirectoryRepositoryInterface
         return PersonalDataModel::all()
             ->map(fn($model) => $this->mapToEntity($model))
             ->toArray();
-
     }
 
     public function exists(int $id): bool

@@ -2,7 +2,7 @@
 
 namespace Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Persistence\Eloquent;
 
-use Src\Employee\PersonalData\Infrastructure\Persistence\Eloquent\PersonalDataModel;
+use Src\Employee\PersonalData\PersonalInformation\Infrastructure\Persistence\Eloquent\PersonalDataModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
