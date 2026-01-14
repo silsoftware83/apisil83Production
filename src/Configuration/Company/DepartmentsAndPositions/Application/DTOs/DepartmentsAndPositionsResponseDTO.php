@@ -6,7 +6,10 @@ final class DepartmentsAndPositionsResponseDTO
 {
     public function __construct(
         public readonly int $id,
-        // TODO: Add response properties
+        public readonly ?string $nombre = null,
+        public readonly ?string $descripcion = null,
+        public readonly ?int $id_jefe_area = null,
+        public readonly array $puestos = [],
         public readonly ?string $createdAt = null,
         public readonly ?string $updatedAt = null,
     ) {}
@@ -15,7 +18,10 @@ final class DepartmentsAndPositionsResponseDTO
     {
         return new self(
             id: $entity->getId(),
-            // TODO: Map entity properties
+            nombre: $entity->getNombre(),
+            descripcion: $entity->getDescripcion(),
+            id_jefe_area: $entity->getIdJefeArea(),
+            puestos: $entity->getPuestos(),
             createdAt: $entity->getCreatedAt()?->format('Y-m-d H:i:s'),
             updatedAt: $entity->getUpdatedAt()?->format('Y-m-d H:i:s'),
         );
@@ -25,9 +31,12 @@ final class DepartmentsAndPositionsResponseDTO
     {
         return [
             'id' => $this->id,
+            'nombre' => $this->nombre,
+            'descripcion' => $this->descripcion,
+            'id_jefe_area' => $this->id_jefe_area,
+            'puestos' => $this->puestos,
             'created_at' => $this->createdAt,
             'updated_at' => $this->updatedAt,
-            // TODO: Add other properties
         ];
     }
 }

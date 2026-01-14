@@ -21,7 +21,10 @@ final class CreateDepartmentsAndPositionsUseCase
             Log::info('Creating DepartmentsAndPositions', $dto->toArray());
 
             $entity = new DepartmentsAndPositions(
-                // TODO: Map DTO to Entity
+                nombre: $dto->nombre,
+                descripcion: $dto->descripcion,
+                idJefeArea: $dto->id_jefe_area,
+                puestos: $dto->puestos
             );
 
             $entity = $this->repository->save($entity);

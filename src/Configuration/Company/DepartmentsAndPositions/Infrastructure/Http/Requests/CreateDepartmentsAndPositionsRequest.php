@@ -15,23 +15,31 @@ final class CreateDepartmentsAndPositionsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // TODO: Add validation rules
-            // 'name' => 'required|string|max:255',
-            // 'email' => 'required|email|unique:table_name',
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'id_jefe_area' => 'nullable|integer',
+            'puestos' => 'nullable|array',
+            'puestos.*.nombre' => 'required|string|max:255',
+            'puestos.*.descripcion' => 'nullable|string',
+            'puestos.*.level' => 'nullable|string|in:easy,mid,senior',
         ];
     }
 
     public function messages(): array
     {
         return [
-            // TODO: Add custom error messages
+            'nombre.required' => 'El nombre del departamento es requerido',
+            'puestos.*.nombre.required' => 'El nombre del puesto es requerido',
         ];
     }
 
     public function toDTO(): CreateDepartmentsAndPositionsDTO
     {
         return new CreateDepartmentsAndPositionsDTO(
-            // TODO: Map validated request data to DTO
+            nombre: $this->validated('nombre'),
+            descripcion: $this->validated('descripcion'),
+            id_jefe_area: $this->validated('id_jefe_area') ?? $this->input('manager'),
+            puestos: $this->validated('puestos') ?? []
         );
     }
 }

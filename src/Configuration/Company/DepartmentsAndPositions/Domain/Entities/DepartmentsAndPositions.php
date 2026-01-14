@@ -6,7 +6,10 @@ final class DepartmentsAndPositions
 {
     public function __construct(
         private ?int $id = null,
-        // TODO: Add domain properties
+        private ?string $nombre = null,
+        private ?string $descripcion = null,
+        private ?int $idJefeArea = null,
+        private array $puestos = [],
         private ?\DateTimeImmutable $createdAt = null,
         private ?\DateTimeImmutable $updatedAt = null,
     ) {}
@@ -21,6 +24,26 @@ final class DepartmentsAndPositions
         $this->id = $id;
     }
 
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    public function getIdJefeArea(): ?int
+    {
+        return $this->idJefeArea;
+    }
+
+    public function getPuestos(): array
+    {
+        return $this->puestos;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -31,15 +54,16 @@ final class DepartmentsAndPositions
         return $this->updatedAt;
     }
 
-    // TODO: Add getters and setters for domain properties
-
     public function toArray(): array
     {
         return [
             'id' => $this->id,
+            'nombre' => $this->nombre,
+            'descripcion' => $this->descripcion,
+            'id_jefe_area' => $this->idJefeArea,
+            'puestos' => $this->puestos,
             'created_at' => $this->createdAt?->format('Y-m-d H:i:s'),
             'updated_at' => $this->updatedAt?->format('Y-m-d H:i:s'),
-            // TODO: Add other properties
         ];
     }
 }
