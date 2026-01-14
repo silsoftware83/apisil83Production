@@ -151,4 +151,8 @@ final class EloquentPersonalDataRepository implements PersonalDataRepositoryInte
             ->get()
             ->toArray();
     }
+    public function activosBasic(): array
+    {
+        return $this->model->activos()->select('id', 'name', 'lastName')->get()->toArray();
+    }
 }

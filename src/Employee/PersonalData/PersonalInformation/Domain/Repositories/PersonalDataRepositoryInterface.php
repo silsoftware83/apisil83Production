@@ -16,4 +16,5 @@ interface PersonalDataRepositoryInterface
     public function exists(int $id): bool;
     public function search(string $search): array;
     public function activos(): array;
+    public function activosBasic(): array;
 }
