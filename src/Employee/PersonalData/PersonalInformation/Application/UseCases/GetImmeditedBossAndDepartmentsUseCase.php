@@ -26,7 +26,7 @@ class GetImmeditedBossAndDepartmentsUseCase
             $response['personalActivo'] = $this->transformData($personalActivo);
             $departamentos = $this->departmentRepository->allDepartmentsWhithPositions();
 
-            Log::info($departamentos);
+
             $response['departamentos'] = $this->formatDepartmentsResponse($departamentos);
             return $response;
         } catch (PersonalDataNotFoundException $e) {
