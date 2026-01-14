@@ -47,10 +47,12 @@ final class EloquentPersonalDataRepository implements PersonalDataRepositoryInte
 
     public function all(int $perPage, int $active): array
     {
-        return PersonalDataModel::where('active', $active)
-            ->paginate($perPage)
-            ->map(fn($model) => $this->mapToEntity($model))
-            ->toArray();
+        $paginator = PersonalDataModel::where('activo', $active)
+            ->paginate($perPage);
+
+        $paginator->getCollection()->transform(fn($model) => $this->mapToEntity($model));
+
+        return $paginator->toArray();
     }
 
     public function exists(int $id): bool
@@ -62,9 +64,9 @@ final class EloquentPersonalDataRepository implements PersonalDataRepositoryInte
     {
         return new PersonalData(
             id: $model->id,
-            // TODO: Map other properties
-            createdAt: $model->created_at ? new \DateTimeImmutable($model->created_at) : null,
-            updatedAt: $model->updated_at ? new \DateTimeImmutable($model->updated_at) : null,
+            name: $model->name,
+            lastName: $model->lastName,
+            email: $model->email,
         );
     }
 }

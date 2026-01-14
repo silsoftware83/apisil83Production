@@ -8,6 +8,7 @@ use Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Persistence
 final class PersonalData
 {
     public function __construct(
+
         private ?int $id = null,
         private ?string $actualContract = null,
         private ?string $dateContractFinish = null,

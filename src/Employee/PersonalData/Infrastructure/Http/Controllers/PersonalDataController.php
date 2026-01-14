@@ -13,18 +13,17 @@ use Src\Employee\PersonalData\Application\UseCases\CreatePersonalDataUseCase;
 use Src\Employee\PersonalData\Application\UseCases\UpdatePersonalDataUseCase;
 use Src\Employee\PersonalData\Application\UseCases\DeletePersonalDataUseCase;
 use Src\Employee\PersonalData\Infrastructure\Http\Requests\ListPersonalDataRequest;
+use Illuminate\Support\Facades\Log;
 
 final class PersonalDataController
 {
     public function index(ListPersonalDataRequest $request, ListPersonalDataUseCase $useCase): JsonResponse
     {
         try {
-            $data = $useCase->execute(new ListPersonalDataDTO($request->validated()));
+            $data = $request->validated();
+            $response = $useCase->execute(new ListPersonalDataDTO($data['per_page'], $data['active']));
 
-            return response()->json([
-                'data' => $data,
-                'message' => 'List retrieved successfully'
-            ]);
+            return response()->json($response);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Failed to retrieve list',

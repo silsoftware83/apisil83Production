@@ -14,11 +14,19 @@ final class ListPersonalDataUseCase
 
     public function execute(ListPersonalDataDTO $dto): array
     {
-        $entities = $this->repository->all($dto->perPage, $dto->active);
+        $result = $this->repository->all($dto->perPage, $dto->active);
+
+        if (isset($result['data']) && is_array($result['data'])) {
+            $result['data'] = array_map(
+                fn($entity) => PersonalDataResponseDTO::fromEntity($entity)->toArray(),
+                $result['data']
+            );
+            return $result;
+        }
 
         return array_map(
-            fn($entity) => PersonalDataResponseDTO::fromEntity($entity),
-            $entities
+            fn($entity) => PersonalDataResponseDTO::fromEntity($entity)->toArray(),
+            $result
         );
     }
 }
