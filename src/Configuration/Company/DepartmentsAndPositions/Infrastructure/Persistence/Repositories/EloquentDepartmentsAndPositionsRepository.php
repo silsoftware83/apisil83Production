@@ -5,6 +5,7 @@ namespace Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Persi
 use Src\Configuration\Company\DepartmentsAndPositions\Domain\Entities\DepartmentsAndPositions;
 use Src\Configuration\Company\DepartmentsAndPositions\Domain\Repositories\DepartmentsAndPositionsRepositoryInterface;
 use Src\Configuration\Company\DepartmentsAndPositions\Domain\Exceptions\DepartmentsAndPositionsNotFoundException;
+use Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Persistence\Eloquent\Departamento;
 use Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Persistence\Eloquent\DepartmentsAndPositionsModel;
 
 final class EloquentDepartmentsAndPositionsRepository implements DepartmentsAndPositionsRepositoryInterface
@@ -17,7 +18,7 @@ final class EloquentDepartmentsAndPositionsRepository implements DepartmentsAndP
 
         $data = $entity->toArray();
         unset($data['id'], $data['created_at'], $data['updated_at']);
-        
+
         $model->fill($data);
         $model->save();
 
@@ -65,5 +66,11 @@ final class EloquentDepartmentsAndPositionsRepository implements DepartmentsAndP
             createdAt: $model->created_at ? new \DateTimeImmutable($model->created_at) : null,
             updatedAt: $model->updated_at ? new \DateTimeImmutable($model->updated_at) : null,
         );
+    }
+
+    public function allDepartmentsWhithPositions(): array
+    {
+        $model = Departamento::select('id', 'nombre', 'descripcion', 'id_jefe_area')->with('puestos')->get();
+        return $model->toArray();
     }
 }
