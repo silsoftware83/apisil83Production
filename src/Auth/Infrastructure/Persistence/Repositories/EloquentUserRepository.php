@@ -6,7 +6,7 @@ use Src\Auth\Domain\Entities\User;
 use Src\Auth\Domain\Repositories\UserRepositoryInterface;
 use App\Models\User as EloquentUser;
 use Illuminate\Support\Collection;
-use Src\Employee\PersonalData\Domain\Entities\PersonalData;
+use Src\Employee\PersonalData\PersonalInformation\Domain\Entities\PersonalData;
 use Illuminate\Support\Facades\DB;
 
 final class EloquentUserRepository implements UserRepositoryInterface

@@ -2,7 +2,7 @@
 
 namespace Src\Auth\Domain\Entities;
 
-use Src\Employee\PersonalData\Domain\Entities\PersonalData;
+use Src\Employee\PersonalData\PersonalInformation\Domain\Entities\PersonalData;
 
 final class User
 {

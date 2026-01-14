@@ -2,7 +2,7 @@
 
 namespace Src\Auth\Application\DTOs;
 
-use Src\Employee\PersonalData\Domain\Entities\PersonalData;
+use Src\Employee\PersonalData\PersonalInformation\Domain\Entities\PersonalData;
 
 final class UserResponseDTO
 {
@@ -36,5 +36,4 @@ final class UserResponseDTO
             'persona' => $this->persona->toArrayLogin(),
         ];
     }
-
 }

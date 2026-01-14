@@ -10,5 +10,6 @@ interface DepartmentsAndPositionsRepositoryInterface
     public function find(int $id): DepartmentsAndPositions;
     public function delete(DepartmentsAndPositions $entity): void;
     public function all(): array;
+    public function allDepartmentsWhithPositions(): array;
     public function exists(int $id): bool;
 }
