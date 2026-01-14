@@ -7,20 +7,31 @@ use Src\Configuration\Company\DepartmentsAndPositions\Domain\Repositories\Depart
 use Src\Configuration\Company\DepartmentsAndPositions\Domain\Exceptions\DepartmentsAndPositionsNotFoundException;
 use Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Persistence\Eloquent\Departamento;
 use Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Persistence\Eloquent\DepartmentsAndPositionsModel;
+use Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Persistence\Eloquent\Puesto;
 
 final class EloquentDepartmentsAndPositionsRepository implements DepartmentsAndPositionsRepositoryInterface
 {
     public function save(DepartmentsAndPositions $entity): DepartmentsAndPositions
     {
         $model = $entity->getId()
-            ? DepartmentsAndPositionsModel::findOrFail($entity->getId())
-            : new DepartmentsAndPositionsModel();
+            ? Departamento::findOrFail($entity->getId())
+            : new Departamento();
 
-        $data = $entity->toArray();
-        unset($data['id'], $data['created_at'], $data['updated_at']);
-
-        $model->fill($data);
+        $model->nombre = $entity->getNombre();
+        $model->descripcion = $entity->getDescripcion();
+        $model->id_jefe_area = $entity->getIdJefeArea();
         $model->save();
+
+        if (!empty($entity->getPuestos())) {
+            foreach ($entity->getPuestos() as $puestoData) {
+                $puesto = new Puesto();
+                $puesto->nombre = $puestoData['nombre'] ?? '';
+                $puesto->descripcion = $puestoData['descripcion'] ?? '';
+                $puesto->level = $puestoData['level'] ?? 'mid';
+                $puesto->id_departamento = $model->id;
+                $puesto->save();
+            }
+        }
 
         $entity->setId($model->id);
         return $entity;
@@ -28,7 +39,7 @@ final class EloquentDepartmentsAndPositionsRepository implements DepartmentsAndP
 
     public function find(int $id): DepartmentsAndPositions
     {
-        $model = DepartmentsAndPositionsModel::find($id);
+        $model = Departamento::with('puestos')->find($id);
 
         if (!$model) {
             throw new DepartmentsAndPositionsNotFoundException($id);
@@ -43,26 +54,28 @@ final class EloquentDepartmentsAndPositionsRepository implements DepartmentsAndP
             throw new DepartmentsAndPositionsNotFoundException(0);
         }
 
-        DepartmentsAndPositionsModel::destroy($entity->getId());
+        Departamento::destroy($entity->getId());
     }
 
     public function all(): array
     {
-        return DepartmentsAndPositionsModel::all()
-            ->map(fn($model) => $this->mapToEntity($model))
-            ->toArray();
+        return Departamento::select('*')->with(['puestos.personal', 'jefe', 'personal'])
+            ->get()->toArray();
     }
 
     public function exists(int $id): bool
     {
-        return DepartmentsAndPositionsModel::where('id', $id)->exists();
+        return Departamento::where('id', $id)->exists();
     }
 
-    private function mapToEntity(DepartmentsAndPositionsModel $model): DepartmentsAndPositions
+    private function mapToEntity(Departamento $model): DepartmentsAndPositions
     {
         return new DepartmentsAndPositions(
             id: $model->id,
-            // TODO: Map other properties
+            nombre: $model->nombre,
+            descripcion: $model->descripcion,
+            idJefeArea: $model->id_jefe_area,
+            puestos: $model->puestos ? $model->puestos->toArray() : [],
             createdAt: $model->created_at ? new \DateTimeImmutable($model->created_at) : null,
             updatedAt: $model->updated_at ? new \DateTimeImmutable($model->updated_at) : null,
         );
