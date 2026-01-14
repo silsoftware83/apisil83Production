@@ -14,10 +14,28 @@ use Src\Employee\PersonalData\Application\UseCases\UpdatePersonalDataUseCase;
 use Src\Employee\PersonalData\Application\UseCases\DeletePersonalDataUseCase;
 use Src\Employee\PersonalData\Infrastructure\Http\Requests\ListPersonalDataRequest;
 use Illuminate\Support\Facades\Log;
+use Src\Employee\PersonalData\Application\UseCases\SearchPersonalDataUseCase;
+use Src\Employee\PersonalData\Infrastructure\Http\Requests\SearchPersonalDataRequest;
 
 final class PersonalDataController
 {
+
     public function index(ListPersonalDataRequest $request, ListPersonalDataUseCase $useCase): JsonResponse
+    {
+        try {
+            $dto = $request->toDTO();
+            $response = $useCase->execute($dto);
+
+            return response()->json($response);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to retrieve list',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function search(SearchPersonalDataRequest $request, SearchPersonalDataUseCase $useCase): JsonResponse
     {
         try {
             $dto = $request->toDTO();

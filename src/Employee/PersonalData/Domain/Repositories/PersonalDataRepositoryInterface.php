@@ -14,4 +14,5 @@ interface PersonalDataRepositoryInterface
      */
     public function all(int $perPage, int $active, int $page = 1): array;
     public function exists(int $id): bool;
+    public function search(string $search): array;
 }

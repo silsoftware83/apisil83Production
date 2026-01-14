@@ -6,6 +6,7 @@ use Src\Employee\PersonalData\Domain\Entities\PersonalData;
 use Src\Employee\PersonalData\Domain\Repositories\PersonalDataRepositoryInterface;
 use Src\Employee\PersonalData\Domain\Exceptions\PersonalDataNotFoundException;
 use Src\Employee\PersonalData\Infrastructure\Persistence\Eloquent\PersonalDataModel;
+use Illuminate\Support\Facades\Log;
 
 final class EloquentPersonalDataRepository implements PersonalDataRepositoryInterface
 {
@@ -62,11 +63,24 @@ final class EloquentPersonalDataRepository implements PersonalDataRepositoryInte
 
     private function mapToEntity(PersonalDataModel $model): PersonalData
     {
+
         return new PersonalData(
             id: $model->id,
             name: $model->name,
             lastName: $model->lastName,
             email: $model->email,
         );
+    }
+
+    public function search(string $search): array
+    {
+        $personalData = PersonalDataModel::where('name', 'like', "%{$search}%")
+            ->orWhere('lastName', 'like', "%{$search}%")
+            ->orWhere('email', 'like', "%{$search}%")
+            ->get();
+
+        $personalData->transform(fn($model) => $this->mapToEntity($model));
+
+        return $personalData->toArray();
     }
 }
