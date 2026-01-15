@@ -12,9 +12,79 @@ use Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Http\Reques
 use Src\Configuration\Company\DepartmentsAndPositions\Application\UseCases\CreateDepartmentsAndPositionsUseCase;
 use Src\Configuration\Company\DepartmentsAndPositions\Application\UseCases\UpdateDepartmentsAndPositionsUseCase;
 use Src\Configuration\Company\DepartmentsAndPositions\Application\UseCases\DeleteDepartmentsAndPositionsUseCase;
+use Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Http\Requests\CreatePositionsRequest;
+use Src\Configuration\Company\DepartmentsAndPositions\Application\UseCases\CreatePositionsUseCase;
+
+use Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Http\Requests\UpdatePositionRequest;
+use Src\Configuration\Company\DepartmentsAndPositions\Application\UseCases\UpdatePositionUseCase;
+
+use Src\Configuration\Company\DepartmentsAndPositions\Application\UseCases\DeletePositionUseCase;
 
 final class DepartmentsAndPositionsController
 {
+    public function destroyPosition(int $id, DeletePositionUseCase $useCase): JsonResponse
+    {
+        try {
+            $useCase->execute($id);
+
+            return response()->json([
+                'message' => 'Position deleted successfully'
+            ]);
+        } catch (DepartmentsAndPositionsNotFoundException $e) {
+            return response()->json([
+                'error' => 'Not found',
+                'message' => $e->getMessage()
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to delete position',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updatePosition(int $id, UpdatePositionRequest $request, UpdatePositionUseCase $useCase): JsonResponse
+    {
+        try {
+            $useCase->execute($request->toDTO());
+
+            return response()->json([
+                'message' => 'Position updated successfully'
+            ]);
+        } catch (DepartmentsAndPositionsNotFoundException $e) {
+            return response()->json([
+                'error' => 'Not found',
+                'message' => $e->getMessage()
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to update position',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function storePositions(CreatePositionsRequest $request, CreatePositionsUseCase $useCase): JsonResponse
+    {
+        try {
+            $useCase->execute($request->toDTO());
+
+            return response()->json([
+                'message' => 'Positions added successfully'
+            ], 201);
+        } catch (DepartmentsAndPositionsNotFoundException $e) {
+            return response()->json([
+                'error' => 'Not found',
+                'message' => $e->getMessage()
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to add positions',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function index(ListDepartmentsAndPositionsUseCase $useCase): JsonResponse
     {
         try {

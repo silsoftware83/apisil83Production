@@ -12,4 +12,7 @@ interface DepartmentsAndPositionsRepositoryInterface
     public function all(): array;
     public function allDepartmentsWhithPositions(): array;
     public function exists(int $id): bool;
+    public function addPositions(int $id, array $positions): void;
+    public function updatePosition(int $id, array $data): void;
+    public function deletePosition(int $id): void;
 }

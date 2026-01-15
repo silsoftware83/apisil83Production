@@ -20,7 +20,16 @@ final class DepartmentsAndPositionsControllerTest extends TestCase
     public function test_can_create_departmentsandpositions(): void
     {
         $data = [
-            // TODO: Add test data
+            'nombre' => 'IT Department',
+            'descripcion' => 'Information Technology',
+            'manager' => 1,
+            'puestos' => [
+                [
+                    'nombre' => 'Developer',
+                    'descripcion' => 'Standard dev',
+                    'level' => 'mid'
+                ]
+            ]
         ];
 
         $response = $this->postJson('/api/configuration/company/departmentsandpositions', $data);

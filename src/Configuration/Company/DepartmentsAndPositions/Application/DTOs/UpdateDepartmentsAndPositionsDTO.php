@@ -8,7 +8,9 @@ final class UpdateDepartmentsAndPositionsDTO
 {
     public function __construct(
         public readonly int $id,
-        // TODO: Add properties to update
+        public readonly ?string $nombre = null,
+        public readonly ?string $descripcion = null,
+        public readonly ?int $id_jefe_area = null,
     ) {
         $this->validate();
     }
@@ -18,14 +20,15 @@ final class UpdateDepartmentsAndPositionsDTO
         if ($this->id <= 0) {
             throw new DepartmentsAndPositionsValidationException('Invalid ID');
         }
-        // TODO: Add more validation logic
     }
 
     public function toArray(): array
     {
         return [
             'id' => $this->id,
-            // TODO: Map properties
+            'nombre' => $this->nombre,
+            'descripcion' => $this->descripcion,
+            'id_jefe_area' => $this->id_jefe_area,
         ];
     }
 }

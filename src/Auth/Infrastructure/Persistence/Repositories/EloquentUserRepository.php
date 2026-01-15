@@ -26,7 +26,7 @@ final class EloquentUserRepository implements UserRepositoryInterface
         $model = EloquentUser::where('email', $email)->with([
             'persona' => function ($q) {
                 $q->select('id', 'name', 'lastName', 'id_departamento', 'id_puesto')
-                    ->with(['departamento:id,nombre', 'puesto:id,id_departamento,nombre']);
+                    ->with(['departamento:id,nombre', 'puestoRel:id,id_departamento,nombre']);
             }
         ])->first();
 
@@ -91,7 +91,7 @@ final class EloquentUserRepository implements UserRepositoryInterface
                 name: $model->persona->name,
                 lastName: $model->persona->lastName,
                 departamento: $model->persona->departamento,
-                puesto: $model->persona->puesto,
+                puesto: $model->persona->puestoRel,
             )
         );
     }

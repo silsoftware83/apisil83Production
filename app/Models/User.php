@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Src\Employee\PersonalData\Infrastructure\Persistence\Eloquent\PersonalDataModel;
+use Src\Employee\PersonalData\PersonalInformation\Infrastructure\Persistence\Eloquent\PersonalDataModel;
 
 class User extends Authenticatable
 {

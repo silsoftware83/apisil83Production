@@ -66,4 +66,18 @@ final class DepartmentsAndPositions
             'updated_at' => $this->updatedAt?->format('Y-m-d H:i:s'),
         ];
     }
+    public function setNombre(?string $nombre): void
+    {
+        $this->nombre = $nombre;
+    }
+
+    public function setDescripcion(?string $descripcion): void
+    {
+        $this->descripcion = $descripcion;
+    }
+
+    public function setIdJefeArea(?int $idJefeArea): void
+    {
+        $this->idJefeArea = $idJefeArea;
+    }
 }

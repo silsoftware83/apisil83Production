@@ -17,7 +17,7 @@ final class CreateDepartmentsAndPositionsRequest extends FormRequest
         return [
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'id_jefe_area' => 'nullable|integer',
+            'manager' => 'nullable|integer',
             'puestos' => 'nullable|array',
             'puestos.*.nombre' => 'required|string|max:255',
             'puestos.*.descripcion' => 'nullable|string',
@@ -38,7 +38,7 @@ final class CreateDepartmentsAndPositionsRequest extends FormRequest
         return new CreateDepartmentsAndPositionsDTO(
             nombre: $this->validated('nombre'),
             descripcion: $this->validated('descripcion'),
-            id_jefe_area: $this->validated('id_jefe_area') ?? $this->input('manager'),
+            id_jefe_area: $this->validated('manager'),
             puestos: $this->validated('puestos') ?? []
         );
     }

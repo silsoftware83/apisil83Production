@@ -21,7 +21,15 @@ final class UpdateDepartmentsAndPositionsUseCase
 
             $entity = $this->repository->find($dto->id);
 
-            // TODO: Update entity properties from DTO
+            if ($dto->nombre !== null) {
+                $entity->setNombre($dto->nombre);
+            }
+            if ($dto->descripcion !== null) {
+                $entity->setDescripcion($dto->descripcion);
+            }
+            if ($dto->id_jefe_area !== null) {
+                $entity->setIdJefeArea($dto->id_jefe_area);
+            }
 
             $entity = $this->repository->save($entity);
 

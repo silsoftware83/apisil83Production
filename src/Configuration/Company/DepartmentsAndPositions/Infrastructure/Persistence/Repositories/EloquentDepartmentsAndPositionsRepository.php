@@ -86,4 +86,52 @@ final class EloquentDepartmentsAndPositionsRepository implements DepartmentsAndP
         $model = Departamento::select('id', 'nombre', 'descripcion', 'id_jefe_area')->with('puestos')->get();
         return $model->toArray();
     }
+
+    public function addPositions(int $id, array $positions): void
+    {
+        if (!$this->exists($id)) {
+            throw new DepartmentsAndPositionsNotFoundException($id);
+        }
+
+        foreach ($positions as $puestoData) {
+            $puesto = new Puesto();
+            $puesto->nombre = $puestoData['nombre'];
+            $puesto->descripcion = $puestoData['descripcion'] ?? '';
+            $puesto->level = $puestoData['level'] ?? 'mid';
+            $puesto->id_departamento = $id;
+            $puesto->save();
+        }
+    }
+
+    public function updatePosition(int $id, array $data): void
+    {
+        $puesto = Puesto::find($id);
+
+        if (!$puesto) {
+            throw new DepartmentsAndPositionsNotFoundException($id);
+        }
+
+        if (isset($data['nombre'])) {
+            $puesto->nombre = $data['nombre'];
+        }
+        if (isset($data['descripcion'])) {
+            $puesto->descripcion = $data['descripcion'];
+        }
+        if (isset($data['level'])) {
+            $puesto->level = $data['level'];
+        }
+
+        $puesto->save();
+    }
+
+    public function deletePosition(int $id): void
+    {
+        $puesto = Puesto::find($id);
+
+        if (!$puesto) {
+            throw new DepartmentsAndPositionsNotFoundException($id);
+        }
+
+        $puesto->delete();
+    }
 }

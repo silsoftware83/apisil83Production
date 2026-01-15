@@ -3,9 +3,9 @@
 namespace Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Src\Configuration\Company\DepartmentsAndPositions\Application\DTOs\UpdateDepartmentsAndPositionsDTO;
+use Src\Configuration\Company\DepartmentsAndPositions\Application\DTOs\UpdatePositionDTO;
 
-final class UpdateDepartmentsAndPositionsRequest extends FormRequest
+final class UpdatePositionRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,25 +17,25 @@ final class UpdateDepartmentsAndPositionsRequest extends FormRequest
         return [
             'nombre' => 'sometimes|required|string|max:255',
             'descripcion' => 'nullable|string',
-            'manager' => 'nullable|integer',
-            'id_jefe_area' => 'nullable|integer',
+            'level' => 'sometimes|required|string|in:junior,mid,senior',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'nombre.required' => 'El nombre del departamento es requerido',
+            'nombre.required' => 'El nombre del puesto es requerido',
+            'level.in' => 'El nivel del puesto debe ser junior, mid o senior',
         ];
     }
 
-    public function toDTO(): UpdateDepartmentsAndPositionsDTO
+    public function toDTO(): UpdatePositionDTO
     {
-        return new UpdateDepartmentsAndPositionsDTO(
+        return new UpdatePositionDTO(
             id: (int) $this->route('id'),
             nombre: $this->validated('nombre'),
             descripcion: $this->validated('descripcion'),
-            id_jefe_area: $this->validated('manager') ?? $this->validated('id_jefe_area'),
+            level: $this->validated('level')
         );
     }
 }
