@@ -15,23 +15,16 @@ final class CreateSecurityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // TODO: Add validation rules
-            // 'name' => 'required|string|max:255',
-            // 'email' => 'required|email|unique:table_name',
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            // TODO: Add custom error messages
+            'id' => 'required|integer',
+            'permissions' => 'required|array',
         ];
     }
 
     public function toDTO(): CreateSecurityDTO
     {
         return new CreateSecurityDTO(
-            // TODO: Map validated request data to DTO
+            userId: (int) $this->query('id'),
+            permissions: $this->input('permissions')
         );
     }
 }
