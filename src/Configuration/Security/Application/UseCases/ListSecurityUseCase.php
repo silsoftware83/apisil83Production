@@ -14,7 +14,7 @@ final class ListSecurityUseCase
 
     public function execute(ListSecurityDTO $dto): array
     {
-        $entities = $this->repository->all();
+        $entities = $this->repository->Personal();
 
         return array_map(
             fn($entity) => SecurityResponseDTO::fromEntity($entity),
