@@ -7,4 +7,5 @@ return [
     Src\Employee\PersonalData\PersonalInformation\Infrastructure\Providers\PersonalDataServiceProvider::class,
     Src\Configuration\Company\DepartmentsAndPositions\Infrastructure\Providers\DepartmentsAndPositionsServiceProvider::class,
     Src\Configuration\Security\Infrastructure\Providers\SecurityServiceProvider::class,
+    Src\TimeAndLocation\Infrastructure\Providers\TimeAndLocationServiceProvider::class,
 ];
