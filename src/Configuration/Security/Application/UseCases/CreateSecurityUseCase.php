@@ -3,11 +3,8 @@
 namespace Src\Configuration\Security\Application\UseCases;
 
 use Src\Configuration\Security\Application\DTOs\CreateSecurityDTO;
-use Src\Configuration\Security\Application\DTOs\SecurityResponseDTO;
-use Src\Configuration\Security\Domain\Entities\Security;
 use Src\Configuration\Security\Domain\Repositories\SecurityRepositoryInterface;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 final class CreateSecurityUseCase
 {
@@ -15,20 +12,56 @@ final class CreateSecurityUseCase
         private SecurityRepositoryInterface $repository
     ) {}
 
-    public function execute(CreateSecurityDTO $dto): SecurityResponseDTO
+    public function execute(CreateSecurityDTO $dto): void
     {
-        return DB::transaction(function () use ($dto) {
-            Log::info('Creating Security', $dto->toArray());
+        DB::transaction(function () use ($dto) {
+            $data = [];
+            $user_id = $dto->userId;
 
-            $entity = new Security(
-                // TODO: Map DTO to Entity
-            );
+            foreach ($dto->permissions as $module) {
+                // Módulo
+                $data[] = [
+                    'user_id' => $user_id,
+                    'module_id' => $module['id'],
+                    'submodule_id' => null,
+                    'subsubmodule_id' => null,
+                    'can_view' => $module['can_view'],
+                    'can_create' => $module['can_create'],
+                    'can_edit' => $module['can_edit'],
+                    'can_delete' => $module['can_delete'],
+                ];
 
-            $entity = $this->repository->save($entity);
+                foreach ($module['submodules'] as $submodule) {
+                    // Submódulo
+                    $data[] = [
+                        'user_id' => $user_id,
+                        'module_id' => $module['id'],
+                        'submodule_id' => $submodule['id'],
+                        'subsubmodule_id' => null,
+                        'can_view' => $submodule['can_view'],
+                        'can_create' => $submodule['can_create'],
+                        'can_edit' => $submodule['can_edit'],
+                        'can_delete' => $submodule['can_delete'],
+                    ];
 
-            Log::info('Security created successfully', ['id' => $entity->getId()]);
+                    foreach ($submodule['subsubmodules'] as $subsubmodule) {
+                        // Sub-submódulo
+                        $data[] = [
+                            'user_id' => $user_id,
+                            'module_id' => $module['id'],
+                            'submodule_id' => $submodule['id'],
+                            'subsubmodule_id' => $subsubmodule['id'],
+                            'can_view' => $subsubmodule['can_view'],
+                            'can_create' => $subsubmodule['can_create'],
+                            'can_edit' => $subsubmodule['can_edit'],
+                            'can_delete' => $subsubmodule['can_delete'],
+                        ];
+                    }
+                }
+            }
 
-            return SecurityResponseDTO::fromEntity($entity);
+            $this->repository->deletePrevius($user_id);
+            $this->repository->createAccess($data);
         });
     }
 }
