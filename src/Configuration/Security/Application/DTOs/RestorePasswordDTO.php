@@ -2,9 +2,10 @@
 
 namespace Src\Configuration\Security\Application\DTOs;
 
-final class ListSecurityDTO
+final class RestorePasswordDTO
 {
     public function __construct(
-        // TODO: Add filter parameters
+        public readonly int $id,
+        public readonly int $updatedBy,
     ) {}
 }
