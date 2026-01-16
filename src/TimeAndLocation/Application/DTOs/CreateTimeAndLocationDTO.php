@@ -15,6 +15,7 @@ final class CreateTimeAndLocationDTO
         public bool $cancheckoutnotary,
         public bool $isweb,
         public ?string $comments,
+        public ?string $type,
     ) {
         $this->validate();
     }
@@ -42,6 +43,9 @@ final class CreateTimeAndLocationDTO
         if (empty($this->isweb)) {
             throw new TimeAndLocationValidationException('Isweb is required');
         }
+        if (empty($this->type)) {
+            throw new TimeAndLocationValidationException('Type is required');
+        }
     }
 
     public function toArray(): array
@@ -55,6 +59,7 @@ final class CreateTimeAndLocationDTO
             'cancheckoutnotary' => $this->cancheckoutnotary,
             'isweb' => $this->isweb,
             'comments' => $this->comments ?? '',
+            'type' => $this->type ?? '1',
         ];
     }
 }

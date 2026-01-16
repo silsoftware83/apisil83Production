@@ -13,8 +13,10 @@ return new class extends Migration {
             $table->increments('id');
             $table->unsignedTinyInteger('id_user'); // int(2)
             $table->string('comments', 200)->nullable();
-            $table->string('latitude', 100);
-            $table->string('longitude', 100);
+            $table->string('latitud', 100);
+            $table->string('longitud', 100);
+            $table->string('ip', 45)->nullable();
+            $table->boolean('cancheckoutnotary')->default(false);
             $table->timestamp('time');
             $table->unsignedTinyInteger('type')->default(1); // int(1)
             $table->boolean('isweb')->nullable();

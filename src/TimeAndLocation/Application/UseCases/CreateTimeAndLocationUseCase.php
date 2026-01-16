@@ -21,6 +21,7 @@ final class CreateTimeAndLocationUseCase
             Log::info('Creating TimeAndLocation', $dto->toArray());
 
             $entity = new TimeAndLocation(
+                id: 0,
                 latitud: $dto->latitud,
                 longitud: $dto->longitud,
                 id_user: $dto->id_user,
@@ -29,6 +30,7 @@ final class CreateTimeAndLocationUseCase
                 cancheckoutnotary: $dto->cancheckoutnotary,
                 isweb: $dto->isweb,
                 comments: $dto->comments,
+                type: $dto->type,
             );
 
             $entity = $this->repository->save($entity);

@@ -68,6 +68,21 @@ final class User
         return $this->passwordLetter;
     }
 
+    public function getCancheckoutnotary(): ?bool
+    {
+        return $this->cancheckoutnotary;
+    }
+
+    public function setPasswordLetter(string $passwordLetter): void
+    {
+        $this->passwordLetter = $passwordLetter;
+    }
+
+    public function setPasswordactualizadopor(string $passwordactualizadopor): void
+    {
+        $this->passwordactualizadopor = $passwordactualizadopor;
+    }
+
     public function toArray(): array
     {
         return [

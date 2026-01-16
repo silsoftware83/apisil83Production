@@ -19,7 +19,7 @@ final class TimeAndLocationController
     {
         try {
             $data = $useCase->execute(new ListTimeAndLocationDTO());
-            
+
             return response()->json([
                 'data' => $data,
                 'message' => 'List retrieved successfully'
@@ -36,7 +36,7 @@ final class TimeAndLocationController
     {
         try {
             $response = $useCase->execute($request->toDTO());
-            
+
             return response()->json([
                 'data' => $response->toArray(),
                 'message' => 'TimeAndLocation created successfully'
@@ -57,10 +57,12 @@ final class TimeAndLocationController
     public function show(int $id, ListTimeAndLocationUseCase $useCase): JsonResponse
     {
         try {
-            // TODO: Implement GetTimeAndLocationUseCase for single item
+            $data = $useCase->execute(new ListTimeAndLocationDTO($id));
+
             return response()->json([
-                'message' => 'Not implemented yet'
-            ], 501);
+                'data' => $data,
+                'message' => 'TimeAndLocation retrieved successfully'
+            ]);
         } catch (TimeAndLocationNotFoundException $e) {
             return response()->json([
                 'error' => 'Not found',
@@ -73,7 +75,7 @@ final class TimeAndLocationController
     {
         try {
             $response = $useCase->execute($request->toDTO());
-            
+
             return response()->json([
                 'data' => $response->toArray(),
                 'message' => 'TimeAndLocation updated successfully'
@@ -100,7 +102,7 @@ final class TimeAndLocationController
     {
         try {
             $useCase->execute($id);
-            
+
             return response()->json([
                 'message' => 'TimeAndLocation deleted successfully'
             ], 204);
@@ -116,5 +118,4 @@ final class TimeAndLocationController
             ], 500);
         }
     }
-
 }

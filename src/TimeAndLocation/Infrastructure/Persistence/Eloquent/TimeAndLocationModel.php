@@ -11,11 +11,13 @@ class TimeAndLocationModel extends Model
     protected $fillable = [
         'id_user',
         'comments',
-        'latitude',
-        'longitude',
+        'latitud',
+        'longitud',
         'time',
         'type',
         'isweb',
+        'ip',
+        'cancheckoutnotary',
     ];
 
     public function user()

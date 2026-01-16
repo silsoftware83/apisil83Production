@@ -14,7 +14,7 @@ final class ListTimeAndLocationUseCase
 
     public function execute(ListTimeAndLocationDTO $dto): array
     {
-        $entities = $this->repository->all();
+        $entities = $this->repository->recordsByUserToday($dto->id);
 
         return array_map(
             fn($entity) => TimeAndLocationResponseDTO::fromEntity($entity),

@@ -22,6 +22,7 @@ final class CreateTimeAndLocationRequest extends FormRequest
             'ip' => 'required',
             'cancheckoutnotary' => 'required',
             'isweb' => 'required',
+            'type' => 'required',
         ];
     }
 
@@ -35,6 +36,7 @@ final class CreateTimeAndLocationRequest extends FormRequest
             'ip.required' => 'La ip es obligatoria',
             'cancheckoutnotary.required' => 'El cancheckoutnotary es obligatorio',
             'isweb.required' => 'El isweb es obligatorio',
+            'type.required' => 'El type es obligatorio',
         ];
     }
 
@@ -49,6 +51,7 @@ final class CreateTimeAndLocationRequest extends FormRequest
             cancheckoutnotary: $this->validated('cancheckoutnotary'),
             isweb: $this->validated('isweb'),
             comments: $this->validated('comments') ?? '',
+            type: $this->validated('type') ?? '1',
         );
     }
 }

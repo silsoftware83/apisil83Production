@@ -10,5 +10,6 @@ interface TimeAndLocationRepositoryInterface
     public function find(int $id): TimeAndLocation;
     public function delete(TimeAndLocation $entity): void;
     public function all(): array;
+    public function recordsByUserToday(int $userId): array;
     public function exists(int $id): bool;
 }

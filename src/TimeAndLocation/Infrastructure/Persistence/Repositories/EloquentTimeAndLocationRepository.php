@@ -11,12 +11,10 @@ final class EloquentTimeAndLocationRepository implements TimeAndLocationReposito
 {
     public function save(TimeAndLocation $entity): TimeAndLocation
     {
-        $model = $entity->getId()
-            ? TimeAndLocationModel::findOrFail($entity->getId())
-            : new TimeAndLocationModel();
+        $model = new TimeAndLocationModel();
 
         $data = $entity->toArray();
-        unset($data['id'], $data['created_at'], $data['updated_at']);
+        unset($data['id']);
 
         $model->fill($data);
         $model->save();
@@ -57,6 +55,16 @@ final class EloquentTimeAndLocationRepository implements TimeAndLocationReposito
         return TimeAndLocationModel::where('id', $id)->exists();
     }
 
+    public function recordsByUserToday(int $userId): array
+    {
+        return TimeAndLocationModel::where('id_user', $userId)
+            ->whereDate('created_at', now()->toDateString())
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(fn($model) => $this->mapToEntity($model))
+            ->toArray();
+    }
+
     private function mapToEntity(TimeAndLocationModel $model): TimeAndLocation
     {
         return new TimeAndLocation(
@@ -71,6 +79,7 @@ final class EloquentTimeAndLocationRepository implements TimeAndLocationReposito
             comments: $model->comments,
             createdAt: $model->created_at ? new \DateTimeImmutable($model->created_at) : null,
             updatedAt: $model->updated_at ? new \DateTimeImmutable($model->updated_at) : null,
+            type: $model->type
         );
     }
 }

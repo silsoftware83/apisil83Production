@@ -14,6 +14,7 @@ final class TimeAndLocation
         private bool $cancheckoutnotary,
         private bool $isweb,
         private ?string $comments,
+        private ?string $type,
         private ?\DateTimeImmutable $createdAt = null,
         private ?\DateTimeImmutable $updatedAt = null,
     ) {}
@@ -78,10 +79,14 @@ final class TimeAndLocation
         return $this->comments;
     }
 
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
             'latitud' => $this->latitud,
             'longitud' => $this->longitud,
             'id_user' => $this->id_user,
@@ -90,8 +95,7 @@ final class TimeAndLocation
             'cancheckoutnotary' => $this->cancheckoutnotary,
             'isweb' => $this->isweb,
             'comments' => $this->comments,
-            'created_at' => $this->createdAt?->format('Y-m-d H:i:s'),
-            'updated_at' => $this->updatedAt?->format('Y-m-d H:i:s'),
+            'type' => $this->type,
         ];
     }
 }
