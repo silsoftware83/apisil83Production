@@ -627,6 +627,7 @@ final class PersonalData
             'nombre_completo' => $this->getNombreCompleto(),
             'departamento' => $this->departamento,
             'puesto' => $this->puestoRel,
+            'ingreso' => $this->getIngreso(),
         ];
     }
 }

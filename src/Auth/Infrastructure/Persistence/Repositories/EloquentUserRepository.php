@@ -25,7 +25,7 @@ final class EloquentUserRepository implements UserRepositoryInterface
     {
         $model = EloquentUser::where('email', $email)->with([
             'persona' => function ($q) {
-                $q->select('id', 'name', 'lastName', 'id_departamento', 'id_puesto')
+                $q->select('id', 'name', 'lastName', 'id_departamento', 'id_puesto', 'id_jefe_inmediato', 'ingreso')
                     ->with(['departamento:id,nombre', 'puestoRel:id,id_departamento,nombre']);
             }
         ])->first();
@@ -39,13 +39,18 @@ final class EloquentUserRepository implements UserRepositoryInterface
 
     public function findById(int $id): ?User
     {
-        $model = EloquentUser::find($id);
+        $model = EloquentUser::with([
+            'persona' => function ($q) {
+                $q->select('id', 'name', 'lastName', 'id_departamento', 'id_puesto', 'id_jefe_inmediato', 'ingreso')
+                    ->with(['departamento:id,nombre', 'puestoRel:id,id_departamento,nombre']);
+            }
+        ])->find($id);
 
         if (!$model) {
             return null;
         }
 
-        return $this->mapToEntity($model);
+        return $this->mapToEntityPersonaLogin($model);
     }
 
     public function save(User $user): User
@@ -84,7 +89,9 @@ final class EloquentUserRepository implements UserRepositoryInterface
             email: $model->email,
             passwordLetter: $model->passwordLetter,
             cancheckoutnotary: $model->cancheckoutnotary,
-            persona: new PersonalData(
+            last_seen: $model->last_seen,
+
+            persona: $model->persona ? new PersonalData(
                 id: $model->persona->id,
                 idDepartamento: $model->persona->id_departamento,
                 idPuesto: $model->persona->id_puesto,
@@ -92,8 +99,9 @@ final class EloquentUserRepository implements UserRepositoryInterface
                 name: $model->persona->name,
                 lastName: $model->persona->lastName,
                 departamento: $model->persona->departamento,
-                puesto: $model->persona->puestoRel,
-            )
+                puestoRel: $model->persona->puestoRel,
+                ingreso: $model->persona->ingreso,
+            ) : null
         );
     }
 

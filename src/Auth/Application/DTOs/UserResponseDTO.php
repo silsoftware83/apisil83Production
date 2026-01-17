@@ -12,6 +12,7 @@ final class UserResponseDTO
         public readonly string $email,
         public readonly ?string $passwordLetter = null,
         public readonly ?bool $cancheckoutnotary = null,
+        public readonly ?string $lastseen = null,
         public readonly ?PersonalData $persona = null,
     ) {}
 
@@ -24,6 +25,7 @@ final class UserResponseDTO
             cancheckoutnotary: $entity->getCancheckoutnotary(),
             passwordLetter: $entity->getPasswordLetter(),
             persona: $entity->getPersona(),
+            lastseen: $entity->getLastseen(),
 
         );
     }
@@ -37,6 +39,7 @@ final class UserResponseDTO
             'passwordLetter' => $this->passwordLetter,
             'cancheckoutnotary' => $this->cancheckoutnotary,
             'persona' => $this->persona->toArrayLogin(),
+            'lastseen' => $this->lastseen,
         ];
     }
 }

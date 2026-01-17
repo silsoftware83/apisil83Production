@@ -14,7 +14,7 @@ final class User
         private ?PersonalData $persona = null,
         private ?int $id_personal = null,
         private ?\DateTimeImmutable $email_verified_at = null,
-        private ?\DateTimeImmutable $last_seen = null,
+        private ?string $last_seen = null,
         private ?string $device = null,
         private ?string $deviceOffice = null,
         private ?bool $cancheckoutnotary = null,
@@ -82,6 +82,12 @@ final class User
     {
         $this->passwordactualizadopor = $passwordactualizadopor;
     }
+    public function getLastseen(): ?string
+    {
+        return $this->last_seen;
+    }
+
+
 
     public function toArray(): array
     {
